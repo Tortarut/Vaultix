@@ -1,8 +1,10 @@
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Sum
 from django.utils import timezone
 
 from apps.banking.models import Account, LedgerEntry, Operation
+from apps.cards.models import Card
+from apps.notifications.services import emit_event
 
 from .exceptions import InsufficientFunds, InvalidTransfer
 
@@ -16,6 +18,7 @@ def transfer_between_accounts(
     description: str = "",
     idempotency_key: str | None = None,
     kind: str = Operation.Kind.INTERNAL_TRANSFER,
+    card_id: int | None = None,
 ) -> Operation:
     if amount_minor <= 0:
         raise InvalidTransfer("Amount must be positive.")
@@ -54,6 +57,35 @@ def transfer_between_accounts(
         if src.balance_minor < amount_minor:
             raise InsufficientFunds("Insufficient funds.")
 
+        card = None
+        if card_id is not None:
+            card = (
+                Card.objects.select_for_update()
+                .select_related("account", "account__owner")
+                .filter(id=card_id)
+                .first()
+            )
+            if card is None:
+                raise InvalidTransfer("Card not found.")
+            if card.account_id != src.id:
+                raise InvalidTransfer("Card is not linked to source account.")
+            if card.account.owner_id != created_by.id:
+                raise InvalidTransfer("Card not owned by user.")
+            if card.status != Card.Status.ACTIVE:
+                raise InvalidTransfer("Card is not active.")
+
+            today = timezone.localdate()
+            spent_today = (
+                Operation.objects.filter(
+                    card=card,
+                    status=Operation.Status.COMPLETED,
+                    created_at__date=today,
+                ).aggregate(s=Sum("amount_minor"))["s"]
+                or 0
+            )
+            if spent_today + amount_minor > card.daily_limit_minor:
+                raise InvalidTransfer("Daily card limit exceeded.")
+
         operation = Operation.objects.create(
             kind=kind,
             status=Operation.Status.COMPLETED,
@@ -61,6 +93,7 @@ def transfer_between_accounts(
             amount_minor=amount_minor,
             from_account=src,
             to_account=dst,
+            card=card,
             description=description,
             created_by=created_by,
             idempotency_key=idempotency_key,
@@ -89,6 +122,19 @@ def transfer_between_accounts(
                     balance_after_minor=dst.balance_minor,
                 ),
             ]
+        )
+
+        emit_event(
+            user=created_by,
+            event_type="banking.transfer.completed",
+            payload={
+                "operation_id": str(operation.id),
+                "kind": operation.kind,
+                "amount_minor": operation.amount_minor,
+                "currency": operation.currency,
+                "from_account_id": str(src.id),
+                "to_account_id": str(dst.id),
+            },
         )
 
         return operation

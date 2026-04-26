@@ -82,6 +82,13 @@ class Operation(models.Model):
         null=True,
         blank=True,
     )
+    card = models.ForeignKey(
+        "cards.Card",
+        on_delete=models.PROTECT,
+        related_name="operations",
+        null=True,
+        blank=True,
+    )
 
     description = models.CharField(max_length=255, blank=True)
     created_by = models.ForeignKey(

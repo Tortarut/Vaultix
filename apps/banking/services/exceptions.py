@@ -9,3 +9,7 @@ class InvalidTransfer(BankingError):
 class InsufficientFunds(BankingError):
     pass
 
+
+class ForbiddenOperation(BankingError):
+    pass
+

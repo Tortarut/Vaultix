@@ -54,6 +54,7 @@ class OperationSerializer(serializers.ModelSerializer):
             "amount_minor",
             "from_account",
             "to_account",
+            "card",
             "description",
             "idempotency_key",
             "failure_reason",
@@ -66,6 +67,7 @@ class OperationSerializer(serializers.ModelSerializer):
 class TransferCreateSerializer(serializers.Serializer):
     from_account_id = serializers.UUIDField()
     to_account_id = serializers.UUIDField()
+    card_id = serializers.IntegerField(required=False)
     amount_minor = serializers.IntegerField(min_value=1)
     description = serializers.CharField(max_length=255, required=False, allow_blank=True)
 
@@ -73,6 +75,13 @@ class TransferCreateSerializer(serializers.Serializer):
 class P2PCreateSerializer(serializers.Serializer):
     from_account_id = serializers.UUIDField()
     to_public_number = serializers.CharField(max_length=32)
+    card_id = serializers.IntegerField(required=False)
+    amount_minor = serializers.IntegerField(min_value=1)
+    description = serializers.CharField(max_length=255, required=False, allow_blank=True)
+
+
+class TopUpCreateSerializer(serializers.Serializer):
+    account_id = serializers.UUIDField()
     amount_minor = serializers.IntegerField(min_value=1)
     description = serializers.CharField(max_length=255, required=False, allow_blank=True)
 
