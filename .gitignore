@@ -54,3 +54,4 @@ manage.py
 drf_example
 
 db.sqlite3
+.env
