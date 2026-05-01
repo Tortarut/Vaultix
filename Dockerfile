@@ -12,7 +12,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["sh", "-c", "python scripts/wait_for_db.py && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"]

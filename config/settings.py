@@ -89,14 +89,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-if os.environ.get("POSTGRES_HOST"):
-    DATABASES["default"] = {
+    "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("POSTGRES_DB", "vaultix"),
         "USER": os.environ.get("POSTGRES_USER", "vaultix"),
@@ -104,6 +97,7 @@ if os.environ.get("POSTGRES_HOST"):
         "HOST": os.environ.get("POSTGRES_HOST", "db"),
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
+}
 
 AUTH_USER_MODEL = "users.User"
 
