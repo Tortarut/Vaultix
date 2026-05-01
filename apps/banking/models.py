@@ -50,7 +50,6 @@ class Operation(models.Model):
     class Kind(models.TextChoices):
         INTERNAL_TRANSFER = "INTERNAL_TRANSFER", "Internal transfer"
         P2P = "P2P", "P2P"
-        TPP_PAYMENT = "TPP_PAYMENT", "TPP payment"
         ADJUSTMENT = "ADJUSTMENT", "Adjustment"
 
     class Status(models.TextChoices):

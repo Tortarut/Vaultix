@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.banking',
     'apps.cards',
-    'apps.open_banking',
     'apps.notifications',
 ]
 

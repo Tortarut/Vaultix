@@ -96,12 +96,10 @@ class TransferCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        # Internal transfers: only between user's own accounts.
         if not Account.objects.filter(id=data["to_account_id"], owner=request.user).exists():
             raise ValidationError(
                 {
-                    "to_account_id": "Destination account must belong to the current user. "
-                    "Use P2P/Open Banking for external transfers."
+                    "to_account_id": "Destination account must belong to the current user. Use P2P for external transfers."
                 }
             )
 

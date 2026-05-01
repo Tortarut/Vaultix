@@ -33,7 +33,6 @@ def transfer_between_accounts(
             return existing
 
     with transaction.atomic():
-        # Lock accounts in deterministic order to reduce deadlock risk.
         ids = sorted([from_account_id, to_account_id])
         locked = {
             a.id: a
@@ -50,7 +49,6 @@ def transfer_between_accounts(
         if src.currency != dst.currency:
             raise InvalidTransfer("Currency mismatch.")
 
-        # Authorization: only owner can initiate outgoing transfer from the account.
         if src.owner_id != created_by.id:
             raise InvalidTransfer("Cannot transfer from account not owned by user.")
 
@@ -100,7 +98,6 @@ def transfer_between_accounts(
             completed_at=timezone.now(),
         )
 
-        # Update balances using F() to keep DB-side arithmetic.
         Account.objects.filter(id=src.id).update(balance_minor=F("balance_minor") - amount_minor)
         Account.objects.filter(id=dst.id).update(balance_minor=F("balance_minor") + amount_minor)
 

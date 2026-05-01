@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             name='Operation',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('kind', models.CharField(choices=[('INTERNAL_TRANSFER', 'Internal transfer'), ('P2P', 'P2P'), ('TPP_PAYMENT', 'TPP payment'), ('ADJUSTMENT', 'Adjustment')], max_length=32)),
+                ('kind', models.CharField(choices=[('INTERNAL_TRANSFER', 'Internal transfer'), ('P2P', 'P2P'), ('ADJUSTMENT', 'Adjustment')], max_length=32)),
                 ('status', models.CharField(choices=[('PENDING', 'Pending'), ('COMPLETED', 'Completed'), ('FAILED', 'Failed'), ('CANCELED', 'Canceled')], default='PENDING', max_length=16)),
                 ('currency', models.CharField(default='RUB', max_length=3)),
                 ('amount_minor', models.BigIntegerField()),

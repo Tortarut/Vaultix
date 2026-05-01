@@ -22,7 +22,6 @@ def settle_pending_operation(*, operation_id) -> Operation:
         if op.from_account_id is None or op.to_account_id is None:
             raise InvalidTransfer("Operation accounts not set.")
 
-        # Lock accounts in deterministic order.
         ids = sorted([op.from_account_id, op.to_account_id])
         locked = {a.id: a for a in Account.objects.select_for_update().filter(id__in=ids)}
         src = locked[op.from_account_id]
@@ -43,7 +42,6 @@ def settle_pending_operation(*, operation_id) -> Operation:
         if src.balance_minor < op.amount_minor:
             raise InsufficientFunds("Insufficient funds.")
 
-        # Apply balances.
         Account.objects.filter(id=src.id).update(balance_minor=F("balance_minor") - op.amount_minor)
         Account.objects.filter(id=dst.id).update(balance_minor=F("balance_minor") + op.amount_minor)
         src.refresh_from_db(fields=["balance_minor"])
