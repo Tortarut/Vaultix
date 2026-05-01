@@ -1,5 +1,6 @@
 services:
   web:
+    container_name: vaultix_backend
     build: .
     platform: linux/amd64
     ports:
@@ -14,7 +15,8 @@ services:
       - db
 
   db:
-    image: postgres:16-alpine
+    container_name: vaultix_db
+    image: postgres:16
     platform: linux/amd64
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
