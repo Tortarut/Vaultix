@@ -1,0 +1,1671 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Vaultix API",
+        "version": "1.0.0",
+        "description": "Online bank backend API"
+    },
+    "paths": {
+        "/api/v1/banking/accounts/": {
+            "get": {
+                "operationId": "v1_banking_accounts_list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Banking"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedAccountList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "v1_banking_accounts_create",
+                "tags": [
+                    "Banking"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccountCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccountCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/accounts/{account_id}/ledger/": {
+            "get": {
+                "operationId": "v1_banking_accounts_ledger_list",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "account_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Banking"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedLedgerEntryList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/accounts/{id}/": {
+            "get": {
+                "operationId": "v1_banking_accounts_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Banking"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Account"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/admin/topup/": {
+            "post": {
+                "operationId": "v1_banking_admin_topup_create",
+                "tags": [
+                    "Banking"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TopUpCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TopUpCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/operations/": {
+            "get": {
+                "operationId": "v1_banking_operations_list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Banking"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedOperationList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/operations/{id}/": {
+            "get": {
+                "operationId": "v1_banking_operations_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Banking"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Operation"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/p2p/": {
+            "post": {
+                "operationId": "v1_banking_p2p_create",
+                "tags": [
+                    "Banking"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/P2PCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/P2PCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/banking/transfers/": {
+            "post": {
+                "operationId": "v1_banking_transfers_create",
+                "tags": [
+                    "Banking"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransferCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransferCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/cards/": {
+            "get": {
+                "operationId": "v1_cards_list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Cards"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedCardList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/cards/{card_id}/block/": {
+            "post": {
+                "operationId": "v1_cards_block_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "card_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Cards"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CardBlockToggleRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardBlockToggle"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/cards/create/": {
+            "post": {
+                "operationId": "v1_cards_create_create",
+                "tags": [
+                    "Cards"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CardCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/": {
+            "get": {
+                "operationId": "v1_notifications_list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedNotificationEventList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/users/me/": {
+            "get": {
+                "operationId": "v1_users_me_retrieve",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/users/password/change/": {
+            "post": {
+                "operationId": "v1_users_password_change_create",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChangePassword"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/users/register/": {
+            "post": {
+                "operationId": "v1_users_register_create",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {
+                        "bearerAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Register"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/users/token/": {
+            "post": {
+                "operationId": "v1_users_token_create",
+                "description": "Takes a set of user credentials and returns an access and refresh JSON web\ntoken pair to prove the authentication of those credentials.",
+                "tags": [
+                    "v1"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenObtainPairRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenObtainPair"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/users/token/refresh/": {
+            "post": {
+                "operationId": "v1_users_token_refresh_create",
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+                "tags": [
+                    "v1"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefreshRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenRefresh"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Account": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "public_number": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "currency": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CurrencyEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/StatusEd5Enum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "balance_minor": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "closed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "balance_minor",
+                    "closed_at",
+                    "created_at",
+                    "currency",
+                    "id",
+                    "public_number",
+                    "status"
+                ]
+            },
+            "AccountCreate": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "public_number": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/CurrencyEnum"
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/StatusEd5Enum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "balance_minor": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "balance_minor",
+                    "created_at",
+                    "id",
+                    "public_number",
+                    "status"
+                ]
+            },
+            "AccountCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "currency": {
+                        "$ref": "#/components/schemas/CurrencyEnum"
+                    }
+                }
+            },
+            "Card": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "account": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "masked_pan": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CardStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "daily_limit_minor": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "blocked_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "account",
+                    "blocked_at",
+                    "created_at",
+                    "daily_limit_minor",
+                    "id",
+                    "masked_pan",
+                    "status"
+                ]
+            },
+            "CardBlockToggle": {
+                "type": "object",
+                "properties": {
+                    "blocked": {
+                        "type": "boolean",
+                        "default": true
+                    }
+                }
+            },
+            "CardBlockToggleRequest": {
+                "type": "object",
+                "properties": {
+                    "blocked": {
+                        "type": "boolean",
+                        "default": true
+                    }
+                }
+            },
+            "CardCreate": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "daily_limit_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "required": [
+                    "account_id"
+                ]
+            },
+            "CardCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "daily_limit_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "required": [
+                    "account_id"
+                ]
+            },
+            "CardStatusEnum": {
+                "enum": [
+                    "ACTIVE",
+                    "BLOCKED",
+                    "EXPIRED"
+                ],
+                "type": "string",
+                "description": "* `ACTIVE` - Active\n* `BLOCKED` - Blocked\n* `EXPIRED` - Expired"
+            },
+            "ChangePassword": {
+                "type": "object",
+                "properties": {
+                    "old_password": {
+                        "type": "string"
+                    },
+                    "new_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "new_password",
+                    "old_password"
+                ]
+            },
+            "ChangePasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "old_password": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "new_password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "new_password",
+                    "old_password"
+                ]
+            },
+            "CurrencyEnum": {
+                "enum": [
+                    "RUB"
+                ],
+                "type": "string",
+                "description": "* `RUB` - RUB"
+            },
+            "KindEnum": {
+                "enum": [
+                    "INTERNAL_TRANSFER",
+                    "P2P",
+                    "ADJUSTMENT"
+                ],
+                "type": "string",
+                "description": "* `INTERNAL_TRANSFER` - Internal transfer\n* `P2P` - P2P\n* `ADJUSTMENT` - Adjustment"
+            },
+            "KycStatusEnum": {
+                "enum": [
+                    "NEW",
+                    "VERIFIED",
+                    "REJECTED"
+                ],
+                "type": "string",
+                "description": "* `NEW` - New\n* `VERIFIED` - Verified\n* `REJECTED` - Rejected"
+            },
+            "LedgerEntry": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "operation": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "account": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "balance_after_minor": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "account",
+                    "amount_minor",
+                    "balance_after_minor",
+                    "created_at",
+                    "id",
+                    "operation"
+                ]
+            },
+            "NotificationEvent": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "event_type": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "payload": {
+                        "readOnly": true
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NotificationEventStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "processed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "event_type",
+                    "id",
+                    "payload",
+                    "processed_at",
+                    "status"
+                ]
+            },
+            "NotificationEventStatusEnum": {
+                "enum": [
+                    "PENDING",
+                    "SENT",
+                    "FAILED"
+                ],
+                "type": "string",
+                "description": "* `PENDING` - Pending\n* `SENT` - Sent\n* `FAILED` - Failed"
+            },
+            "Operation": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "kind": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/KindEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/OperationStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "currency": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "from_account": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "to_account": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "card": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "idempotency_key": {
+                        "type": "string",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "failure_reason": {
+                        "type": "string",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "completed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "amount_minor",
+                    "card",
+                    "completed_at",
+                    "created_at",
+                    "currency",
+                    "description",
+                    "failure_reason",
+                    "from_account",
+                    "id",
+                    "idempotency_key",
+                    "kind",
+                    "status",
+                    "to_account"
+                ]
+            },
+            "OperationStatusEnum": {
+                "enum": [
+                    "PENDING",
+                    "COMPLETED",
+                    "FAILED",
+                    "CANCELED"
+                ],
+                "type": "string",
+                "description": "* `PENDING` - Pending\n* `COMPLETED` - Completed\n* `FAILED` - Failed\n* `CANCELED` - Canceled"
+            },
+            "P2PCreate": {
+                "type": "object",
+                "properties": {
+                    "from_account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "to_public_number": {
+                        "type": "string",
+                        "maxLength": 32
+                    },
+                    "card_id": {
+                        "type": "integer"
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "amount_minor",
+                    "from_account_id",
+                    "to_public_number"
+                ]
+            },
+            "P2PCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "from_account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "to_public_number": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 32
+                    },
+                    "card_id": {
+                        "type": "integer"
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "amount_minor",
+                    "from_account_id",
+                    "to_public_number"
+                ]
+            },
+            "PaginatedAccountList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Account"
+                        }
+                    }
+                }
+            },
+            "PaginatedCardList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Card"
+                        }
+                    }
+                }
+            },
+            "PaginatedLedgerEntryList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LedgerEntry"
+                        }
+                    }
+                }
+            },
+            "PaginatedNotificationEventList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NotificationEvent"
+                        }
+                    }
+                }
+            },
+            "PaginatedOperationList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Operation"
+                        }
+                    }
+                }
+            },
+            "Register": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email address",
+                        "maxLength": 254
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "email",
+                    "username"
+                ]
+            },
+            "RegisterRequest": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 1,
+                        "title": "Email address",
+                        "maxLength": 254
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "minLength": 8
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "email",
+                    "password",
+                    "username"
+                ]
+            },
+            "StatusEd5Enum": {
+                "enum": [
+                    "ACTIVE",
+                    "BLOCKED",
+                    "CLOSED"
+                ],
+                "type": "string",
+                "description": "* `ACTIVE` - Active\n* `BLOCKED` - Blocked\n* `CLOSED` - Closed"
+            },
+            "TokenObtainPair": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "refresh": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "access",
+                    "refresh"
+                ]
+            },
+            "TokenObtainPairRequest": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "password",
+                    "username"
+                ]
+            },
+            "TokenRefresh": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "access"
+                ]
+            },
+            "TokenRefreshRequest": {
+                "type": "object",
+                "properties": {
+                    "refresh": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "refresh"
+                ]
+            },
+            "TopUpCreate": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "account_id",
+                    "amount_minor"
+                ]
+            },
+            "TopUpCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "account_id",
+                    "amount_minor"
+                ]
+            },
+            "TransferCreate": {
+                "type": "object",
+                "properties": {
+                    "from_account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "to_account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "card_id": {
+                        "type": "integer"
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "amount_minor",
+                    "from_account_id",
+                    "to_account_id"
+                ]
+            },
+            "TransferCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "from_account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "to_account_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "card_id": {
+                        "type": "integer"
+                    },
+                    "amount_minor": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "amount_minor",
+                    "from_account_id",
+                    "to_account_id"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email address",
+                        "maxLength": 254
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "kyc_status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/KycStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "email",
+                    "id",
+                    "kyc_status",
+                    "username"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

@@ -3,7 +3,8 @@ from django.utils.dateparse import parse_datetime
 from rest_framework import generics, permissions, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.views import APIView
+
+from drf_spectacular.utils import extend_schema
 
 from apps.banking.models import Account, LedgerEntry, Operation
 from apps.banking.services.adjustments import topup_account
@@ -21,6 +22,7 @@ from .serializers import (
 )
 
 
+@extend_schema(tags=["Banking"])
 class AccountListCreateView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -33,6 +35,7 @@ class AccountListCreateView(generics.ListCreateAPIView):
         return AccountSerializer
 
 
+@extend_schema(tags=["Banking"])
 class AccountDetailView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = AccountSerializer
@@ -41,6 +44,7 @@ class AccountDetailView(generics.RetrieveAPIView):
         return Account.objects.filter(owner=self.request.user)
 
 
+@extend_schema(tags=["Banking"])
 class AccountLedgerView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = LedgerEntrySerializer
@@ -65,6 +69,7 @@ class AccountLedgerView(generics.ListAPIView):
         return qs.order_by("-created_at")
 
 
+@extend_schema(tags=["Banking"])
 class OperationListView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = OperationSerializer
@@ -80,6 +85,7 @@ class OperationListView(generics.ListAPIView):
         return qs.order_by("-created_at")
 
 
+@extend_schema(tags=["Banking"])
 class OperationDetailView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = OperationSerializer
@@ -88,11 +94,13 @@ class OperationDetailView(generics.RetrieveAPIView):
         return Operation.objects.filter(created_by=self.request.user)
 
 
-class TransferCreateView(APIView):
+@extend_schema(tags=["Banking"])
+class TransferCreateView(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = TransferCreateSerializer
 
     def post(self, request):
-        serializer = TransferCreateSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
@@ -121,11 +129,13 @@ class TransferCreateView(APIView):
         return Response(OperationSerializer(op).data, status=status.HTTP_201_CREATED)
 
 
-class P2PCreateView(APIView):
+@extend_schema(tags=["Banking"])
+class P2PCreateView(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = P2PCreateSerializer
 
     def post(self, request):
-        serializer = P2PCreateSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
@@ -152,11 +162,13 @@ class P2PCreateView(APIView):
         return Response(OperationSerializer(op).data, status=status.HTTP_201_CREATED)
 
 
-class TopUpView(APIView):
+@extend_schema(tags=["Banking"])
+class TopUpView(generics.GenericAPIView):
     permission_classes = (permissions.IsAdminUser,)
+    serializer_class = TopUpCreateSerializer
 
     def post(self, request):
-        serializer = TopUpCreateSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 

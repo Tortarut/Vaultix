@@ -3,16 +3,20 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import generics, permissions, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.views import APIView
+
+from drf_spectacular.utils import extend_schema
 
 from .serializers import RegisterSerializer, UserSerializer
+from .serializers_extra import ChangePasswordSerializer
 
 
+@extend_schema(tags=["Users"])
 class RegisterView(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
 
 
+@extend_schema(tags=["Users"])
 class MeView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
@@ -20,14 +24,16 @@ class MeView(generics.RetrieveAPIView):
         return self.request.user
 
 
-class ChangePasswordView(APIView):
+@extend_schema(tags=["Users"])
+class ChangePasswordView(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
 
     def post(self, request):
-        old_password = request.data.get("old_password")
-        new_password = request.data.get("new_password")
-        if not old_password or not new_password:
-            raise ValidationError({"detail": "old_password and new_password are required."})
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        old_password = serializer.validated_data["old_password"]
+        new_password = serializer.validated_data["new_password"]
 
         if not request.user.check_password(old_password):
             raise ValidationError({"old_password": "Invalid password."})

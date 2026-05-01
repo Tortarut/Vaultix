@@ -22,3 +22,7 @@ class CardCreateSerializer(serializers.Serializer):
     account_id = serializers.UUIDField()
     daily_limit_minor = serializers.IntegerField(min_value=1, required=False)
 
+
+class CardBlockToggleSerializer(serializers.Serializer):
+    blocked = serializers.BooleanField(required=False, default=True)
+
