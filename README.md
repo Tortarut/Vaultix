@@ -48,14 +48,6 @@ docker compose ps
 docker compose exec web python manage.py migrate
 ```
 
-### 4) Создание суперпользователя (админка Django)
-
-```bash
-docker compose exec -it web python manage.py createsuperuser
-```
-
-Административный интерфейс Django (если включён в `urls.py`): `/admin/`.
-
 ## Полезные адреса
 
 - OpenAPI schema: `/api/schema/`
@@ -68,11 +60,3 @@ docker compose exec -it web python manage.py createsuperuser
 ```bash
 python manage.py test
 ```
-
-Измерение покрытия (по пакетам `apps/*`, без миграций):
-
-```bash
-coverage run manage.py test
-coverage report --include="apps/*" --omit="*/migrations/*" --show-missing
-```
-
