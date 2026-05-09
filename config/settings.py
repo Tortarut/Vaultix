@@ -31,11 +31,17 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"
 
-ALLOWED_HOSTS = [
+_default_allowed_hosts = [
+    "vaultix123.duckdns.org",
+    "localhost",
+    "127.0.0.1",
+]
+_env_allowed_hosts = [
     h.strip()
     for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
     if h.strip()
 ]
+ALLOWED_HOSTS = list(dict.fromkeys(_default_allowed_hosts + _env_allowed_hosts))
 
 
 # Application definition
